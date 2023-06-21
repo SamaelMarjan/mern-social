@@ -1,0 +1,30 @@
+.card-style {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    overflow: hidden;
+}
+
+.img-style {
+    height: 70%;
+    background-color: #ddd;
+}
+
+.img-style > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.like-comment {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.like {}
+
+.comments {}
+
+.comment-section {}

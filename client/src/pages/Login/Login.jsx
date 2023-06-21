@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 const Login = () => {
   return (
-    <div className='container-fluid'>
-        <form className='container mt-5'>
+    <div className='container'>
+        <form className='mt-5'>
             <h4 className='mb-3'>Login</h4>
             <div className="mb-3">
                 <input type="email" className="form-control" placeholder='Email' autoComplete='off' />

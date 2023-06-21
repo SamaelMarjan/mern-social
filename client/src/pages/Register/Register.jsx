@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 const Register = () => {
   return (
-    <div className='container-fluid'>
-        <form className='container mt-5'>
+    <div className='container'>
+        <form className='mt-5'>
             <h4 className='mb-3'>Register</h4>
             <div className="row mb-3">
                 <div className="col">
