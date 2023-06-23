@@ -1,9 +1,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { login } from '../../redux/authSlice'
 
 const Login = () => {
+  const dispatch = useDispatch()
   const [input, setInput] = useState({
     email: '',
     password: ''
@@ -25,6 +28,7 @@ const Login = () => {
           email: '',
           password: ''
         })
+        dispatch(login(data))
       } else {
         toast.error(data.message)
       }

@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './navbar.css'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
+    const {user} = useSelector((state) => state.auth)
     const profileRef = useRef(null);
     const [open, setOpen] = useState(false)
 
