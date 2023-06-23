@@ -1,12 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import './navbar.css'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {Modal} from 'antd'
+import CreatePost from '../../pages/CreatePost/CreatePost'
+import { logout } from '../../redux/authSlice'
 
 const Navbar = () => {
     const {user} = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const profileRef = useRef(null);
     const [open, setOpen] = useState(false)
+    const [creteModal, setCreateModal] = useState(false)
+
+    const createOpenModal = () => {
+        setCreateModal(!creteModal)
+    }
 
     const openModal = () => {
         setOpen(!open)
@@ -28,6 +37,11 @@ const Navbar = () => {
         };
       }, []);
 
+      //handle logout
+      const handleLogout = () => {
+        dispatch(logout())
+      }
+
   return (
     <div className='position'>
         <nav className="navbar navbar-expand-lg position-sticky">
@@ -38,36 +52,48 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                     <Link className="navbar-brand" href="#">Hidden brand</Link>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to={'/register'}>Register</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to={'/login'}>Login</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to={'/'}>Home</NavLink>
-                        </li>
-                        <li className="nav-item" ref={profileRef}>
-                            <NavLink className="nav-link" onClick={openModal}>Profile</NavLink>
-                        </li>
+                        {
+                            user ? <>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to={'/'}>Home</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" onClick={createOpenModal}>Create Post</NavLink>
+                                </li>
+                                <li className="nav-item" ref={profileRef}>
+                                    <NavLink className="nav-link" onClick={openModal}>Profile</NavLink>
+                                </li>
+                                {
+                                    open &&
+                                    <div className='style-modal' onClick={openModal}>
+                                        <ul className=''>
+                                            <li>
+                                                <Link to={'/profile'} className='modal-link' onClick={openModal}>Profile</Link>
+                                            </li>
+                                            <li>
+                                                <NavLink>Setting</NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink  className='modal-link' onClick={handleLogout}>Logout</NavLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                                    {/* crete post modal */}
+                                    <Modal open={creteModal} onCancel={createOpenModal}>
+                                        <CreatePost />
+                                    </Modal>
+                                
+                            </> : <>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to={'/register'}>Register</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to={'/login'}>Login</NavLink>
+                                </li>
+                            </>
+                        }
                     </ul>
-                    {
-                        open &&
-                        <div className='style-modal' onClick={openModal}>
-                            <ul className=''>
-                                <li>
-                                    <Link to={'/profile'} className='modal-link' onClick={openModal}>Profile</Link>
-                                </li>
-                                <li>
-                                    <NavLink>Setting</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink>Logout</NavLink>
-                                </li>
-                            </ul>
-                        </div>
-
-                    }
                 </div>
             </div>
         </nav>
