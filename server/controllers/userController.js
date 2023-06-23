@@ -7,15 +7,15 @@ module.exports.createUser = async(req, res) => {
         const {userName, firstName, lastName, email, password, confirmPassword} = req.body
         
         //validation
-        if(!userName) return res.json({message: "User Name Required"})
         if(!firstName) return res.json({message: "Firstname Required"})
         if(!lastName) return res.json({message: "Lastname required"})
+        if(!userName) return res.json({message: "User Name Required"})
         if(!email) return res.json({message: "Email required"})
         if(!password) return res.json({message: "Password required"})
         if(confirmPassword !== password) return res.json({message: "Confirm passwoed and password should be matched"})
 
         //check already registered user
-        const oldUser = await userModel.findOne({email})
+        const oldUser = await userModel.findOne({email, userName})
         if(oldUser) return res.json({message: "Email already registered"})
 
         //hash password
@@ -98,7 +98,16 @@ module.exports.forgotController = async(req, res) => {
 }
 
 // update password controller
-module.exports.updatePasswordController = async(req, res) => {}
+module.exports.updatePasswordController = async(req, res) => {
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({
+            success: false, message: 'Something went wrong when updating password'
+        })
+    }
+}
 
 // get all user
 module.exports.allUser = async(req, res) => {
