@@ -1,5 +1,6 @@
 const { hashPass, comparePass } = require('../helpers/authHelpers')
 const userModel = require('../model/user')
+const jwt = require('jsonwebtoken')
 
 // create user controller
 module.exports.createUser = async(req, res) => {
@@ -50,12 +51,14 @@ module.exports.loginUser = async(req, res) => {
         const compare = await comparePass(password, user.password)
         if(!compare) return res.json({message: "Invalid password"})
         
+        const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1d'})
+
         //remove password
         user.password = undefined;
         user.confirmPassword = undefined;
 
         res.status(200).json({
-            success: true, message: "Login successfull", user
+            success: true, message: "Login successfull", user, token
         })
     } catch (error) {
         console.log(error);
