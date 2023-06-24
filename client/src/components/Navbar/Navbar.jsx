@@ -35,12 +35,12 @@ const Navbar = () => {
         return () => {
           document.removeEventListener('mousedown', handleClickOutside);
         };
-      }, []);
+    }, []);
 
-      //handle logout
-      const handleLogout = () => {
-        dispatch(logout())
-      }
+    //handle logout
+    const handleLogout = () => {
+    dispatch(logout())
+    }
 
   return (
     <div className='position'>
@@ -50,7 +50,7 @@ const Navbar = () => {
                     <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                    <Link className="navbar-brand" href="#">Hidden brand</Link>
+                    <Link className="navbar-brand" to={'/'}>Hidden brand</Link>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         {
                             user ? <>
@@ -81,7 +81,7 @@ const Navbar = () => {
                                 }
                                     {/* crete post modal */}
                                     <Modal open={creteModal} onCancel={createOpenModal}>
-                                        <CreatePost />
+                                        <CreatePost onCancel={createOpenModal} />
                                     </Modal>
                                 
                             </> : <>

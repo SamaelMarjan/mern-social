@@ -1,48 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './home.css'
 import Card from '../../components/Card/Card'
-
-const data = [
-  {
-    id: 1,
-    title: 'post one',
-    img: 'images/image one.jpg',
-    desc: 'desc 1',
-  },
-  {
-    id: 2,
-    title: 'post two',
-    img: 'images/image two.jpg',
-    desc: 'desc 2',
-  },
-  {
-    id: 3,
-    title: 'post three',
-    img: 'images/image three.jpg',
-    desc: 'desc 3',
-  },
-  {
-    id: 4,
-    title: 'post five',
-    img: 'images/image four.jpg',
-    desc: 'desc 4',
-  },
-  {
-    id: 5,
-    title: 'post six',
-    img: 'images/image three.jpg',
-    desc: 'desc 5',
-  },
-]
+import { Toaster, toast } from 'react-hot-toast'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const Home = () => {
+  const {token} = useSelector((state) => state.auth)
+  const [post, setPost] = useState([])
+
+  //get all post
+  const getAll = async() => {
+    try {
+      const {data} = await axios.get('http://localhost:5000/post/get', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(data);
+      // Sort todos by createdAt in descending order
+      const sortedTodos = data.allPost.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt) || new Date(b.createdAt) - new Date(a.createdAt));
+      setPost(sortedTodos)
+    } catch (error) {
+      console.log(error);
+      toast.error('Error')
+    }
+  }
+
+  useEffect(() => {
+    getAll()
+  }, [])
+
   return (
     <div className='container home-style'>
+      <Toaster />
       <div>
         {
-          data.map((data) => (
-            <div  key={data.id}>
-              <Card id={data.id} img={data.img} title={data.title} desc={data.desc} />
+          post.map((data) => (
+            <div  key={data._id}>
+              <Card id={data._id} img={data.image} title={data.post}  />
             </div>
           ))
         }
