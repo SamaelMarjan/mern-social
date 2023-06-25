@@ -3,6 +3,7 @@ import {FcLike, FcLikePlaceholder} from 'react-icons/fc'
 import { CiMenuKebab } from 'react-icons/ci'
 import './card.css'
 import { AiFillDelete, AiTwotoneEdit } from 'react-icons/ai'
+import { BiCommentAdd } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
 import { Modal } from 'antd'
 import EditPost from '../../pages/EditPost/EditPost'
@@ -118,12 +119,14 @@ const Card = ({title, img, id, likes, created, time}) => {
               </div>
             </>
           }
+          <div>
+            <BiCommentAdd size={30}/>
+          </div>
+        </div>
               <div>
                 {likes.length} likes
               </div>
             <div className='comments'>comments</div>
-            <div className='comment-section'>comment here</div>
-        </div>
         <div className='created-at'>
           {moment(time).fromNow()}
         </div>
