@@ -38,7 +38,7 @@ const Home = () => {
         {
           post.map((data) => (
             <div  key={data._id}>
-              <Card created={data.createBy} id={data._id} img={data.image} title={data.posts} likes={data.likes} />
+              <Card time={data.createdAt} created={data.createBy} id={data._id} img={data.image} title={data.posts} likes={data.likes} />
             </div>
           ))
         }

@@ -9,8 +9,9 @@ import EditPost from '../../pages/EditPost/EditPost'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import moment from 'moment'
 
-const Card = ({title, img, id, likes, created}) => {
+const Card = ({title, img, id, likes, created, time}) => {
   const {token, user} = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [menuModal, setMenuModal] = useState(false)
@@ -122,6 +123,9 @@ const Card = ({title, img, id, likes, created}) => {
               </div>
             <div className='comments'>comments</div>
             <div className='comment-section'>comment here</div>
+        </div>
+        <div className='created-at'>
+          {moment(time).fromNow()}
         </div>
         <div className='menu-bar' ref={profileRef} onClick={handleMenu}>
           <CiMenuKebab size={20} />
