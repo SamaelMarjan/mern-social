@@ -82,12 +82,12 @@ module.exports.deletePost = async(req, res) => {
 //like
 module.exports.likePost = async(req, res) => {
     try {
-        await postModel.findByIdAndUpdate(req.body.id, {
+        const like = await postModel.findByIdAndUpdate(req.body.postId, {
             $push:{
                 likes: req.user.id
             }
         }, {new: true})
-        res.status(200).json({message: 'Successfully liked'})
+        res.status(200).json({message: 'Successfully liked', like})
     } catch (error) {
         console.log(error);
         res.status(404).json({
@@ -97,4 +97,18 @@ module.exports.likePost = async(req, res) => {
 }
 
 //unlike
-module.exports.unlikePost = async(req, res) => {}
+module.exports.unlikePost = async(req, res) => {
+    try {
+        const unLike = await postModel.findByIdAndUpdate(req.body.postId, {
+            $pull:{
+                likes: req.user.id
+            }
+        }, {new: true})
+        res.status(200).json({message: 'Successfully unliked', unLike})
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({
+            success: false, message: "Something wrong when unlike post"
+        })
+    }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {FcLikePlaceholder} from 'react-icons/fc'
+import {FcLike, FcLikePlaceholder} from 'react-icons/fc'
 import { CiMenuKebab } from 'react-icons/ci'
 import './card.css'
 import { AiFillDelete, AiTwotoneEdit } from 'react-icons/ai'
@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 
-const Card = ({title, img, id}) => {
+const Card = ({title, img, id, likes, created}) => {
   const {token, user} = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [menuModal, setMenuModal] = useState(false)
@@ -58,6 +58,40 @@ const Card = ({title, img, id}) => {
     }
   }
 
+  //like post
+  const likePost = async(postId) => {
+    try {
+      const {data} = await axios.put('http://localhost:5000/post/like', {postId}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(data);
+      toast.success(data.message)
+      window.location.reload()
+    } catch (error) {
+      console.log(error);
+      toast.error('Error')
+    }
+  }
+
+  //unlike post
+  const unlikePost = async(postId) => {
+    try {
+      const {data} = await axios.put('http://localhost:5000/post/unlike', {postId}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(data);
+      toast.success(data.message)
+      window.location.reload()
+    } catch (error) {
+      console.log(error);
+      toast.error('Error')
+    }
+  }
+
   return (
     <div key={id} className='card mt-5 card-style'>
       {
@@ -71,9 +105,20 @@ const Card = ({title, img, id}) => {
         !img && <h2>{title}</h2>
       }
         <div className='like-comment'>
-            <div className='like'>
-              <FcLikePlaceholder size={30} />
-            </div>
+          {
+            likes?.includes(user._id) ? <>
+              <div onClick={() => unlikePost(id)}>
+                <FcLike size={30} />
+              </div>
+            </> : <>
+              <div className='like' onClick={() => likePost(id)}>
+                <FcLikePlaceholder size={30} />
+              </div>
+            </>
+          }
+              <div>
+                {likes.length} likes
+              </div>
             <div className='comments'>comments</div>
             <div className='comment-section'>comment here</div>
         </div>
@@ -83,12 +128,20 @@ const Card = ({title, img, id}) => {
         {
           menuModal &&
           <div className='menu-modal' onClick={handleMenu}>
-            <div className='menu-edit'  onClick={() => setEditModal(true)}>
-              <AiTwotoneEdit className='menu-click' size={20} />
-            </div>
-            <div className='menu-delete' onClick={handleDelete}>
-              <AiFillDelete className='menu-click' size={20} />
-            </div>
+            {
+              user?._id === created?._id ? <>
+                <div className='menu-edit'  onClick={() => setEditModal(true)}>
+                  <AiTwotoneEdit className='menu-click' size={20} />
+                </div>
+                <div className='menu-delete' onClick={handleDelete}>
+                  <AiFillDelete className='menu-click' size={20} />
+                </div>
+              </> : <>
+                <div>
+                  Share
+                </div>
+              </>
+            }
           </div>
         }
             <Modal open={editModal} onCancel={() => setEditModal(false)}>
