@@ -95,14 +95,15 @@ const Card = ({title, img, id, likes, created}) => {
   return (
     <div key={id} className='card mt-5 card-style'>
       {
-        img && (
+        img ? ( <>
           <div className='img-style'>
-              <img src={img} alt={title} />
+            <img src={`http://localhost:5000/post/${img}`} alt={title} />
           </div>
-        )
-      }
-      {
-        !img && <h2>{title}</h2>
+          <div>{title}</div>
+        </>
+        ) : (<>
+          <h2>{title}</h2>
+        </>)
       }
         <div className='like-comment'>
           {
@@ -144,9 +145,9 @@ const Card = ({title, img, id, likes, created}) => {
             }
           </div>
         }
-            <Modal open={editModal} onCancel={() => setEditModal(false)}>
-              <EditPost handleModal={() => setEditModal(false)} pid={id} />
-            </Modal>
+        <Modal open={editModal} onCancel={() => setEditModal(false)}>
+          <EditPost handleModal={() => setEditModal(false)} pid={id} />
+        </Modal>
     </div>
   )
 }

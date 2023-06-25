@@ -1,10 +1,34 @@
 const { createPost, getAll, getSingle, updatePost, deletePost, likePost, unlikePost } = require('../controllers/postController')
 const { verifyToken } = require('../middleware/authMiddleware')
-
+const multer = require('multer')
 const router = require('express').Router()
 
+//img storage path
+const imgconfig = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './uploads')
+    },
+    filename: (req, file, callback) => {
+        callback(null, `image-${file.originalname}`)
+    }
+})
+
+//img filter
+const isImage = (req, file, callback) => {
+    if(file.mimetype.startsWith('image')) {
+        callback(null, true)
+    } else {
+        callback(new Error('Only image is allowed'))
+    }
+}
+
+const upload = multer({
+    storage: imgconfig,
+    fileFilter: isImage
+})
+
 //create post route
-router.post('/create', verifyToken, createPost)
+router.post('/create', upload.single('image'), verifyToken, createPost)
 
 //get all post
 router.get('/get', verifyToken, getAll)

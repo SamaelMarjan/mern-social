@@ -3,8 +3,17 @@ const postModel = require('../model/post')
 //create post controller
 module.exports.createPost = async(req, res) => {
     try {
+        const {posts} = req.body
+        let image = null
+
+        // Check if a file is uploaded
+        if (req.file) {
+            const { filename } = req.file;
+            image = filename;
+        }
+
         //crete post
-        const post = await postModel({...req.body, createBy: req.user.id}).save()
+        const post = await postModel({posts, image, createBy: req.user.id}).save()
         res.status(200).json({
             success: true, message: "Post created successfull", post
         })

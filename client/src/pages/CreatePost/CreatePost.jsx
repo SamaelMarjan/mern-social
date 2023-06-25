@@ -10,7 +10,7 @@ const CreatePost = ({onCancel}) => {
   const {token, user} = useSelector((state) => state.auth)
   const [selected, setSelected] = useState(false)
   const [input, setInput] = useState({
-    post: '',
+    posts: '',
     image: ''
   })
 
@@ -18,8 +18,9 @@ const CreatePost = ({onCancel}) => {
 
 
   const handleChange = (e) => {
-    const {name, value} = e.target
-    setInput({...input, [name] : value})
+    const {name, value, type, files} = e.target
+    const inputValue = type === 'file' ? files[0] : value
+    setInput({...input, [name] : inputValue})
   }
 
   //create post
@@ -27,7 +28,7 @@ const CreatePost = ({onCancel}) => {
     e.preventDefault()
 
     // Check if the input field is empty
-    if (input.post.trim() === '') {
+    if (input.posts.trim() === '') {
       toast.error('Please enter a post')
       return
     }
@@ -35,7 +36,8 @@ const CreatePost = ({onCancel}) => {
     try {
       const {data} = await axios.post('http://localhost:5000/post/create', input, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          "Content-Type" : "multipart/form-data"
         }
       })
       console.log(data);
@@ -74,14 +76,14 @@ const CreatePost = ({onCancel}) => {
         {
           selected ? <>
             <div className="mb-3">
-              <input type="text" className="form-control" placeholder='Write something' />
+              <input type="text" className="form-control" placeholder='Write something' name='posts' value={input.posts} onChange={handleChange} />
             </div>
             <div className="mb-3">
-                <input type="file" className="form-control" placeholder='Write something' />
+                <input id='image' type="file" className="form-control" name='image' accept='images/*' onChange={handleChange} />
             </div>
           </> : <>
             <div className="mb-3">
-              <input type="text" className="form-control" placeholder='Write something' name='post' value={input.post} onChange={handleChange} />
+              <input type="text" className="form-control" placeholder='Write something' name='posts' value={input.posts} onChange={handleChange} />
             </div>
           </>
         }
