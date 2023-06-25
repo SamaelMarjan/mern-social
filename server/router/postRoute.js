@@ -1,4 +1,4 @@
-const { createPost, getAll, getSingle, updatePost, deletePost } = require('../controllers/postController')
+const { createPost, getAll, getSingle, updatePost, deletePost, likePost } = require('../controllers/postController')
 const { verifyToken } = require('../middleware/authMiddleware')
 
 const router = require('express').Router()
@@ -17,5 +17,12 @@ router.put('/update/:id', verifyToken, updatePost)
 
 //delete post
 router.delete('/delete/:id', verifyToken, deletePost)
+
+//like post route
+router.put('/like', verifyToken, likePost)
+
+//unlike post route
+router.put('/unlike', verifyToken, likePost)
+
 
 module.exports = router

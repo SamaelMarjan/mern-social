@@ -86,8 +86,8 @@ const Card = ({title, img, id}) => {
             <div className='menu-edit'  onClick={() => setEditModal(true)}>
               <AiTwotoneEdit className='menu-click' size={20} />
             </div>
-            <div className='menu-delete'>
-              <AiFillDelete className='menu-click'  onClick={handleDelete} size={20} />
+            <div className='menu-delete' onClick={handleDelete}>
+              <AiFillDelete className='menu-click' size={20} />
             </div>
           </div>
         }

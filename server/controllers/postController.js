@@ -78,3 +78,23 @@ module.exports.deletePost = async(req, res) => {
         })
     }
 }
+
+//like
+module.exports.likePost = async(req, res) => {
+    try {
+        await postModel.findByIdAndUpdate(req.body.id, {
+            $push:{
+                likes: req.user.id
+            }
+        }, {new: true})
+        res.status(200).json({message: 'Successfully liked'})
+    } catch (error) {
+        console.log(error);
+        res.status(404).json({
+            success: false, message: "Something wrong when like post"
+        })
+    }
+}
+
+//unlike
+module.exports.unlikePost = async(req, res) => {}
