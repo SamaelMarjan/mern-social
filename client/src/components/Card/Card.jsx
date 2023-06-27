@@ -18,6 +18,11 @@ const Card = ({title, img, id, likes, created, time}) => {
   const [menuModal, setMenuModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
   const profileRef = useRef(null)
+  const [comment, setComment] = useState(false)
+
+  const handleComment = () => {
+    setComment(!comment)
+  }
 
   const handleMenu = () => {
     setMenuModal(!menuModal)
@@ -119,7 +124,7 @@ const Card = ({title, img, id, likes, created, time}) => {
               </div>
             </>
           }
-          <div>
+          <div onClick={handleComment}>
             <BiCommentAdd size={30}/>
           </div>
         </div>
@@ -127,6 +132,16 @@ const Card = ({title, img, id, likes, created, time}) => {
                 {likes.length} likes
               </div>
             <div className='comments'>comments</div>
+            {
+              comment ? <>
+                <div>
+                  <form>
+                    <input type='text' placeholder='Comment here' />
+                  </form>
+                  <button>Submit</button>
+                </div>
+              </> : ''
+            }
         <div className='created-at'>
           {moment(time).fromNow()}
         </div>
